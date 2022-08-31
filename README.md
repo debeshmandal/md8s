@@ -1,5 +1,7 @@
 # md8s
 
+![build](https://github.com/debeshmandal/md8s/actions/workflows/build.yml/badge.svg)
+
 A framework for experimenting with molecular dynamics and scientific computing through containers.
 
 ## Docker Images
