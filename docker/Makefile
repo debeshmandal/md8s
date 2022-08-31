@@ -2,7 +2,6 @@ SHELL=/bin/bash
 VERSION=$(shell git describe --abbrev=6 --dirty --tags | sed -e "s/v//" -)
 DOCKER_PREFIX=debeshmandal/md8s-
 
-
 # HELP
 # This will output the help for each task
 # thanks to https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
