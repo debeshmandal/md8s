@@ -1,3 +1,5 @@
+all: hello
+
 hello: date.txt
 	echo "Hello World!"
 	rm date.txt
