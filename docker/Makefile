@@ -1,6 +1,10 @@
 SHELL=/bin/bash
 VERSION=$(shell git describe --abbrev=6 --dirty --tags | sed -e "s/v//" -)
 DOCKER_PREFIX=debeshmandal/md8s-
+DOCKER_BUILD=docker build -t
+DOCKER_BUILDX_PUSH=docker buildx build --push -t
+
+TARGETS := hello lammps oxdna
 
 # HELP
 # This will output the help for each task
@@ -11,19 +15,19 @@ help: ## Print this help message
 
 .DEFAULT_GOAL := help
 
-all: hello lammps oxdna
+all: $(TARGETS)
 
 .PHONY: hello
 hello: ## Builds hello image at debeshmandal/md8s-hello
-	docker build -t ${DOCKER_PREFIX}$@:${VERSION} $@
+	${DOCKER_BUILD} ${DOCKER_PREFIX}$@:${VERSION} $@
 
 .PHONY: lammps
 lammps: ## Builds lammps image at debeshmandal/md8s-lammps
-	docker build -t ${DOCKER_PREFIX}$@:${VERSION} $@
+	${DOCKER_BUILD} ${DOCKER_PREFIX}$@:${VERSION} $@
 
 .PHONY: oxdna
 oxdna: ## Builds oxdna image at debeshmandal/md8s-oxdna
-	docker build -t ${DOCKER_PREFIX}$@:${VERSION} $@
+	${DOCKER_BUILD} ${DOCKER_PREFIX}$@:${VERSION} $@
 
 .PHONY: clean
 clean: ## Deletes all of the images for this version
@@ -36,16 +40,5 @@ version: ## Prints current version
 	@echo ${VERSION}
 
 .PHONY: deploy
-deploy: hello-deploy lammps-deploy oxdna-deploy ## Deploys to DockerHub (assumes user is logged in as debeshmandal)
-
-.PHONY: hello-deploy
-hello: ## Builds hello image at debeshmandal/md8s-hello using buildx and deploys (assumes user is logged in as debeshmandal)
-	docker buildx build --push -t ${DOCKER_PREFIX}$@:${VERSION} $@
-
-.PHONY: lammps-deploy
-lammps: ## Builds lammps image at debeshmandal/md8s-lammps using buildx and deploys (assumes user is logged in as debeshmandal)
-	docker buildx build --push -t ${DOCKER_PREFIX}$@:${VERSION} $@
-
-.PHONY: oxdna-deploy
-oxdna: ## Builds oxdna image at debeshmandal/md8s-oxdna using buildx and deploys (assumes user is logged in as debeshmandal)
-	docker buildx build --push -t ${DOCKER_PREFIX}$@:${VERSION} $@
+deploy: ## Builds and pushes all targets using buildx (assumes user is logged in as debeshmandal)
+	for t in ${TARGETS}; do ${DOCKER_BUILDX_PUSH} ${DOCKER_PREFIX}$$t:${VERSION}; done
