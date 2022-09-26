@@ -11,8 +11,21 @@ help: ## Print this help message
 
 .DEFAULT_GOAL := help
 
-all: hello
+all: hello lammps
 
 .PHONY: hello
 hello: ## Builds hello image at debeshmandal/md8s-hello
 	docker build -t ${DOCKER_PREFIX}$@:${VERSION} $@
+
+.PHONY: lammps
+lammps: ## Builds lammps image at debeshmandal/md8s-lammps
+	docker build -t ${DOCKER_PREFIX}$@:${VERSION} $@
+
+.PHONY: clean
+clean: ## Deletes all of the images for this version
+	docker image rm ${DOCKER_PREFIX}lammps:${VERSION}
+	docker image rm ${DOCKER_PREFIX}hello:${VERSION}
+
+.PHONY: version
+version: ## Prints current version
+	@echo ${VERSION}
