@@ -41,4 +41,4 @@ version: ## Prints current version
 
 .PHONY: deploy
 deploy: ## Builds and pushes all targets using buildx (assumes user is logged in as debeshmandal)
-	for t in ${TARGETS}; do ${DOCKER_BUILDX_PUSH} ${DOCKER_PREFIX}$$t:${VERSION}; done
+	for t in ${TARGETS}; do ${DOCKER_BUILDX_PUSH} ${DOCKER_PREFIX}$$t:${VERSION} $$t; done
