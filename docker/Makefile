@@ -11,7 +11,7 @@ help: ## Print this help message
 
 .DEFAULT_GOAL := help
 
-all: hello lammps
+all: hello lammps oxdna
 
 .PHONY: hello
 hello: ## Builds hello image at debeshmandal/md8s-hello
@@ -19,6 +19,10 @@ hello: ## Builds hello image at debeshmandal/md8s-hello
 
 .PHONY: lammps
 lammps: ## Builds lammps image at debeshmandal/md8s-lammps
+	docker build -t ${DOCKER_PREFIX}$@:${VERSION} $@
+
+.PHONY: oxdna
+oxdna: ## Builds oxdna image at debeshmandal/md8s-oxdna
 	docker build -t ${DOCKER_PREFIX}$@:${VERSION} $@
 
 .PHONY: clean
