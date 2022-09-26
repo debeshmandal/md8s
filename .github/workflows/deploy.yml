@@ -1,4 +1,4 @@
-name: Build
+name: Deploy
 on:
   push:
     tags: 'v*'
@@ -25,5 +25,4 @@ jobs:
           install: true
 
       - name: Build containers
-        run:
-          - cd docker && make all && make deploy
+        run: cd docker && make all && make deploy
