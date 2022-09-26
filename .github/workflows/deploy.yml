@@ -25,4 +25,7 @@ jobs:
           install: true
 
       - name: Build containers
-        run: cd docker && make all && make deploy
+        run: cd docker && make all
+
+      - name: Deploy
+        run: cd docker && make deploy
