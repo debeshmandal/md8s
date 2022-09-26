@@ -27,9 +27,16 @@ oxdna: ## Builds oxdna image at debeshmandal/md8s-oxdna
 
 .PHONY: clean
 clean: ## Deletes all of the images for this version
-	docker image rm ${DOCKER_PREFIX}lammps:${VERSION}
 	docker image rm ${DOCKER_PREFIX}hello:${VERSION}
+	docker image rm ${DOCKER_PREFIX}lammps:${VERSION}
+	docker image rm ${DOCKER_PREFIX}oxdna:${VERSION}
 
 .PHONY: version
 version: ## Prints current version
 	@echo ${VERSION}
+
+.PHONY: deploy
+deploy: ## Deploys to DockerHub (assumes user is logged in as debeshmandal)
+	docker image push ${DOCKER_PREFIX}hello:${VERSION}
+	docker image push ${DOCKER_PREFIX}lammps:${VERSION}
+	docker image push ${DOCKER_PREFIX}oxdna:${VERSION}
