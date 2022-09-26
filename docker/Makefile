@@ -36,7 +36,16 @@ version: ## Prints current version
 	@echo ${VERSION}
 
 .PHONY: deploy
-deploy: ## Deploys to DockerHub (assumes user is logged in as debeshmandal)
-	docker image push ${DOCKER_PREFIX}hello:${VERSION}
-	docker image push ${DOCKER_PREFIX}lammps:${VERSION}
-	docker image push ${DOCKER_PREFIX}oxdna:${VERSION}
+deploy: hello-deploy lammps-deploy oxdna-deploy ## Deploys to DockerHub (assumes user is logged in as debeshmandal)
+
+.PHONY: hello-deploy
+hello: ## Builds hello image at debeshmandal/md8s-hello using buildx and deploys (assumes user is logged in as debeshmandal)
+	docker buildx build --push -t ${DOCKER_PREFIX}$@:${VERSION} $@
+
+.PHONY: lammps-deploy
+lammps: ## Builds lammps image at debeshmandal/md8s-lammps using buildx and deploys (assumes user is logged in as debeshmandal)
+	docker buildx build --push -t ${DOCKER_PREFIX}$@:${VERSION} $@
+
+.PHONY: oxdna-deploy
+oxdna: ## Builds oxdna image at debeshmandal/md8s-oxdna using buildx and deploys (assumes user is logged in as debeshmandal)
+	docker buildx build --push -t ${DOCKER_PREFIX}$@:${VERSION} $@
